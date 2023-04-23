@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -86,8 +87,6 @@ public class RegistrationActivity extends AppCompatActivity {
     // Function that registers a user
 
     private void UserRegistration(UserRequest userRequest){
-        SharedPreferences sharedPreferences = getSharedPreferences("my_id", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         Call<UserResponse> userRequestCall = ApiService.getTicketApiService().getUser(userRequest);
         userRequestCall.enqueue(new Callback<UserResponse>() {
             @Override
@@ -98,18 +97,21 @@ public class RegistrationActivity extends AppCompatActivity {
                     UserResponse userResponse = response.body();
                     user_id = userResponse.getUser_id();
                     status = userResponse.getStatus();
-                    if(!status.isEmpty()){
-                        editor.putString("auth_id", String.valueOf(user_id));
-                        editor.apply();
+                    dialog.dismiss();
+//                    if(!status.isEmpty()){
+//                        dialog.dismiss();
+//                        Log.d("User ID", String.valueOf(user_id));
+//                        Log.d("Status Code", String.valueOf(user_id));
+//                        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }else{
+                        Toast.makeText(RegistrationActivity.this, "Registration Successful, Try Again!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                        intent.putExtra("auth_id", user_id);
                         startActivity(intent);
                         finish();
-                    }else{
-                        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                        dialog.dismiss();
+                    //}
 
                 }
             }
@@ -117,6 +119,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
                 Toast.makeText(RegistrationActivity.this, "Registration Failed, Try Again!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
     }
