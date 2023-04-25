@@ -3,25 +3,38 @@ package com.example.e_waste.model;
 import java.util.List;
 
 public class TokenResponse {
+    String refresh;
+    String access;
 
-    public List<Token> token;
-
-    public TokenResponse(List<Token> token) {
-        this.token = token;
+    public TokenResponse() {
     }
 
-    public List<Token> getToken() {
-        return token;
+    public TokenResponse(String refresh, String access) {
+        this.refresh = refresh;
+        this.access = access;
     }
 
-    public void setToken(List<Token> token) {
-        this.token = token;
+    public String getRefresh() {
+        return refresh;
+    }
+
+    public void setRefresh(String refresh) {
+        this.refresh = refresh;
+    }
+
+    public String getAccess() {
+        return access;
+    }
+
+    public void setAccess(String access) {
+        this.access = access;
     }
 
     @Override
     public String toString() {
         return "TokenResponse{" +
-                "token=" + token +
+                "refresh='" + refresh + '\'' +
+                ", access='" + access + '\'' +
                 '}';
     }
 }

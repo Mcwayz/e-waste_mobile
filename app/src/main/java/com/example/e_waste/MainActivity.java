@@ -5,31 +5,24 @@ import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.e_waste.activity.CollectionActivity;
+import com.example.e_waste.activity.ProfileActivity;
 import com.example.e_waste.activity.SubscribeActivity;
 import com.example.e_waste.activity.HistoryActivity;
-import com.google.android.material.tabs.TabItem;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private CardView cvCollection, cvHistory, cvSubscribe, cvProfile;
-    private TextView cDate, userMail;
-    public SharedPreferences sharedpreferences;
+    private String UserName;
+
+    private TextView cDate, Username;
+
 
     public static String getCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d'" + getDayOfMonthSuffix(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) + "'", Locale.getDefault());
@@ -58,14 +51,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String currentDate = getCurrentDate();
-        cDate.setText(currentDate);
+        cDate = findViewById(R.id.tv_dash_date);
+        Username = findViewById(R.id.tv_dash_profile_name);
         cvCollection = findViewById(R.id.cv_collection);
         cvSubscribe = findViewById(R.id.cv_sub);
         cvHistory = findViewById(R.id.cv_history);
         cvProfile = findViewById(R.id.cv_profile);
-
+        UserName = getIntent().getStringExtra("username");
+        Username.setText("Hi "+UserName);
+        cDate.setText(currentDate);
         cvProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
 

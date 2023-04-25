@@ -31,7 +31,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText user_email;
+    private EditText user_name;
     private TextView signup;
     private EditText user_password;
     private Button login;
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        user_email = findViewById(R.id.login_email);
+        user_name = findViewById(R.id.username);
         user_password = findViewById(R.id.login_password);
         login = findViewById(R.id.login_button);
         signup = findViewById(R.id.signUpRedirectText);
@@ -58,14 +58,14 @@ public class LoginActivity extends AppCompatActivity {
 
     // Function That Validates The User Input
     private void Validate(){
-        String email, password;
-        email = user_email.getText().toString();
+        String username, password;
+        username = user_name.getText().toString();
         password = user_password.getText().toString();
-        if(email.isEmpty()) {
-            Toast.makeText(this, "Please Enter User Email..", Toast.LENGTH_LONG).show();
+        if(username.isEmpty()) {
+            Toast.makeText(this, "Please Enter Username..", Toast.LENGTH_LONG).show();
         }
         else if(password.isEmpty()) {
-            Toast.makeText(this, "Please Enter User Password..", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please Enter Password..", Toast.LENGTH_LONG).show();
         }else{
             //Calling the authentication function
 
@@ -87,31 +87,25 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
                 if(response.isSuccessful()){
-                    String auth_token, refresh, email;
-                    email = user_email.getText().toString();
+                    String auth_token, refresh, username;
+                    username = user_name.getText().toString();
                     TokenResponse tokenResponse = response.body();
-                    List<Token> tokens = tokenResponse.getToken();
-                    for (Token token : tokens ){
-                        Log.d("Bearer Token","Value : "+token.getToken()+" Refresh Token Value : "+token.getRefresh());
-                        auth_token = token.getToken();
-                        refresh = token.getRefresh();
-                        Log.d("Bearer Token","Value : "+token);
+                    auth_token = tokenResponse.getAccess();
+                    refresh = tokenResponse.getRefresh();
+                    Log.d("Bearer Token","Value : "+auth_token);
+                    dialog.dismiss();
+                    if(!auth_token.isEmpty()){
+                        editor.putString("auth_token", auth_token);
+                        editor.putString("refresh_token", refresh);
+                        editor.apply();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("username", username);
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        Toast.makeText(LoginActivity.this, "Wrong User Credentials, Try Again!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                        if(!auth_token.isEmpty()){
-                            editor.putString("auth_token", auth_token);
-                            editor.putString("refresh_token", refresh);
-                            editor.apply();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("userEmail", email);
-                            startActivity(intent);
-                            finish();
-                        }else{
-                            Toast.makeText(LoginActivity.this, "Wrong User Credentials, Try Again!", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-
                     }
-
                 }else{
                     Toast.makeText(LoginActivity.this, "No Internet Connection, Try Again!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
@@ -126,17 +120,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
     //Function that returns the authentication token
 
     private TokenRequest getAuthToken(){
         TokenRequest tokenRequest = new TokenRequest();
-        if(Objects.requireNonNull(user_email.getText()).toString().equals("")) {
-            Toast.makeText(this, "Please Enter User Email", Toast.LENGTH_SHORT).show();
+        if(Objects.requireNonNull(user_name.getText()).toString().equals("")) {
+            Toast.makeText(this, "Please Enter User Name", Toast.LENGTH_SHORT).show();
         }else if(Objects.requireNonNull(user_password.getText()).toString().equals("")){
             Toast.makeText(this, "Please Enter Password", Toast.LENGTH_SHORT).show();
         }else{
-            tokenRequest.setEmail(user_email.getText().toString());
+            tokenRequest.setUsername(user_name.getText().toString());
             tokenRequest.setPassword(user_password.getText().toString());
         }
         return tokenRequest;

@@ -98,14 +98,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     user_id = userResponse.getUser_id();
                     status = userResponse.getStatus();
                     dialog.dismiss();
-//                    if(!status.isEmpty()){
-//                        dialog.dismiss();
-//                        Log.d("User ID", String.valueOf(user_id));
-//                        Log.d("Status Code", String.valueOf(user_id));
-//                        Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }else{
                         Toast.makeText(RegistrationActivity.this, "Registration Successful, Try Again!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                         startActivity(intent);
