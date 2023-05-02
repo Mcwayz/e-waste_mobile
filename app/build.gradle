@@ -48,4 +48,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     implementation 'com.auth0:java-jwt:3.18.2'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'io.github.pilgr:paperdb:2.7.2'
 }

@@ -1,14 +1,14 @@
 package com.example.e_waste.api;
-import com.example.e_waste.model.CollectionRequest;
-import com.example.e_waste.model.CollectionResponse;
-import com.example.e_waste.model.ProfileRequest;
-import com.example.e_waste.model.ProfileResponse;
-import com.example.e_waste.model.SubscriptionRequest;
-import com.example.e_waste.model.SubscriptionResponse;
-import com.example.e_waste.model.TokenRequest;
-import com.example.e_waste.model.TokenResponse;
-import com.example.e_waste.model.UserRequest;
-import com.example.e_waste.model.UserResponse;
+import com.example.e_waste.model.collections.CollectionRequest;
+import com.example.e_waste.model.collections.CollectionResponse;
+import com.example.e_waste.model.profile.ProfileRequest;
+import com.example.e_waste.model.profile.ProfileResponse;
+import com.example.e_waste.model.subscriptions.SubscriptionRequest;
+import com.example.e_waste.model.subscriptions.SubscriptionResponse;
+import com.example.e_waste.model.authentication.TokenRequest;
+import com.example.e_waste.model.authentication.TokenResponse;
+import com.example.e_waste.model.profile.UserRequest;
+import com.example.e_waste.model.profile.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,7 +18,7 @@ import retrofit2.http.POST;
 
 public interface WasteInterface {
 
-    String base_url = "http://192.168.88.81:8000";
+    String base_url = "http://192.168.8.111:8000";
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json"
@@ -45,7 +45,6 @@ public interface WasteInterface {
     Call<TokenResponse> getAuthToken(@Body TokenRequest tokenRequest);
 
     // Profile Endpoint
-
     @POST
     Call<ProfileResponse> updateProfile(@Body ProfileRequest profileRequest);
 }

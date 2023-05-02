@@ -1,13 +1,16 @@
 package com.example.e_waste;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.e_waste.activity.CollectionActivity;
+import com.example.e_waste.activity.LoginActivity;
 import com.example.e_waste.activity.ProfileActivity;
 import com.example.e_waste.activity.SubscribeActivity;
 import com.example.e_waste.activity.HistoryActivity;
@@ -16,11 +19,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import io.paperdb.Paper;
+
 public class MainActivity extends AppCompatActivity {
 
     private CardView cvCollection, cvHistory, cvSubscribe, cvProfile;
     private String UserName;
 
+    private ImageView imgProfile;
     private TextView cDate, Username;
 
 
@@ -60,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         UserName = getIntent().getStringExtra("username");
         Username.setText("Hi "+UserName);
         cDate.setText(currentDate);
+        imgProfile = findViewById(R.id.img_profile);
+
         cvProfile.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
@@ -79,6 +87,28 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SubscribeActivity.class);
             startActivity(intent);
         });
+
+        imgProfile.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, imgProfile);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_options, popupMenu.getMenu());
+            // Set click listener for menu items
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_logout:
+                        // Handle logout action here
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+
+            popupMenu.show();
+        });
+
     }
 
 

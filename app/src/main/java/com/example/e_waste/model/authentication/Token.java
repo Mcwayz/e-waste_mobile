@@ -1,4 +1,4 @@
-package com.example.e_waste.model;
+package com.example.e_waste.model.authentication;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class Token implements Parcelable {
-
     private String refresh;
     private String token;
 

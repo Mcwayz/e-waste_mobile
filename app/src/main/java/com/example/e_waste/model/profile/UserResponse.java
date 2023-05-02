@@ -1,4 +1,4 @@
-package com.example.e_waste.model;
+package com.example.e_waste.model.profile;
 
 
 

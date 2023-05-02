@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,12 +16,10 @@ import android.widget.Toast;
 
 import com.example.e_waste.MainActivity;
 import com.example.e_waste.R;
-import com.example.e_waste.model.Token;
-import com.example.e_waste.model.TokenRequest;
-import com.example.e_waste.model.TokenResponse;
+import com.example.e_waste.model.authentication.TokenRequest;
+import com.example.e_waste.model.authentication.TokenResponse;
 import com.example.e_waste.service.ApiService;
 
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;

@@ -2,23 +2,16 @@ package com.example.e_waste.activity;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auth0.jwt.JWT;
@@ -26,14 +19,12 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.e_waste.R;
-import com.example.e_waste.model.Auth;
-import com.example.e_waste.model.ProfileRequest;
-import com.example.e_waste.model.ProfileResponse;
+import com.example.e_waste.model.authentication.Auth;
+import com.example.e_waste.model.profile.ProfileRequest;
+import com.example.e_waste.model.profile.ProfileResponse;
 import com.example.e_waste.service.ApiService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Map;
 import java.util.Objects;
@@ -107,8 +98,6 @@ public class ProfileActivity extends AppCompatActivity {
             dialog.show();
         }
     }
-
-
 
     // Function that gets the current location of the device
     @SuppressLint("MissingPermission")

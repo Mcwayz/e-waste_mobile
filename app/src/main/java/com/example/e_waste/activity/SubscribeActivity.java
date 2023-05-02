@@ -1,5 +1,7 @@
 package com.example.e_waste.activity;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.e_waste.R;
@@ -30,6 +33,8 @@ public class SubscribeActivity extends AppCompatActivity {
 
     private Dialog dialog;
     private int wasteTypeId;
+
+    private TextView option;
     private AutoCompleteTextView tfWasteType;
     private ArrayList<String> getWasteType = new ArrayList<>();
     @Override
@@ -37,6 +42,7 @@ public class SubscribeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe);
         tfWasteType = findViewById(R.id.tf_waste_type);
+        option = findViewById(R.id.tv_total_price);
         getWasteType();
     }
 
@@ -52,47 +58,40 @@ public class SubscribeActivity extends AppCompatActivity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                Log.i("Response", response.body());
                 if(response.isSuccessful())
                 {
                     if(response.body()!=null){
                         Log.i("Success", response.body());
+                        String getResponse = response.body();
+                        List<WasteType> getWasteTypeData = new ArrayList<>();
                         try {
-                            String getResponse = response.body();
-                            List<WasteType> getWasteTypeData = new ArrayList<>();
-                            JSONObject object = new JSONObject(getResponse);
-                            JSONArray array  = object.getJSONArray("Waste Types");
-                            getWasteTypeData.add(new WasteType(-1, "---Select---","0.00"));
-                            for (int i = 0; i < array.length(); i++)
-                            {
+                            JSONArray array = new JSONArray(getResponse);
+                            getWasteTypeData.add(new WasteType(-1, "---Select---"));
+                            for (int i = 0; i < array.length(); i++) {
                                 WasteType waste = new WasteType();
                                 JSONObject JsonObject = array.getJSONObject(i);
                                 waste.setId(JsonObject.getInt("waste_id"));
-                                waste.setWaste_type(JsonObject.getString("waste_type")+" "+JsonObject.getString("monthly_price"));
+                                waste.setWaste_type(JsonObject.getString("waste_type") + "    K" + JsonObject.getString("monthly_price"));
                                 waste.setCost(JsonObject.getString("monthly_price"));
                                 getWasteTypeData.add(waste);
+                                Log.i(TAG, "onResponse: " + getWasteTypeData);
                             }
-                            for(int i=0; i<getWasteTypeData.size(); i++){
-                                getWasteType.add(getWasteTypeData.get(i).getWaste_type());
-                            }
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(SubscribeActivity.this, R.layout.spinner_item, getWasteType);
-
-                            adapter.setDropDownViewResource(R.layout.spinner_item);
-                            tfWasteType.setAdapter(adapter);
-
-                            tfWasteType.setOnItemClickListener((parent, view, position, id) -> {
-                                String selectedItem = (String) parent.getItemAtPosition(position);
-                                // Get the index number of the selected item
-                                int index = getWasteType.indexOf(selectedItem);
-                                // You can now use the "index" variable to get the item from the JSON array
-                                Log.d("item selected", String.valueOf(index));
-                                wasteTypeId = index;
-                                // You can now use the index variable to access the selected item in the JSON array
-                            });
-                        }catch (JSONException ex){
+                        } catch (JSONException ex) {
                             ex.printStackTrace();
                         }
-                        dialog.dismiss();
+                        for(int i=0; i<getWasteTypeData.size(); i++){
+                            getWasteType.add(getWasteTypeData.get(i).getWaste_type());
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(SubscribeActivity.this, R.layout.spinner_item, getWasteType);
+                        adapter.setDropDownViewResource(R.layout.spinner_item);
+                        tfWasteType.setAdapter(adapter);
+                        tfWasteType.setOnItemClickListener((parent, view, position, id) -> {
+                            String selectedItem = (String) parent.getItemAtPosition(position);
+                            int index = getWasteType.indexOf(selectedItem);
+                            Log.d("item selected", String.valueOf(index));
+                            wasteTypeId = index;
+                            option.setText(selectedItem);
+                        });
                         Toast.makeText(SubscribeActivity.this, "Waste Types Loaded Successfully", Toast.LENGTH_SHORT).show();
                     }
                 }

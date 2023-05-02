@@ -10,10 +10,9 @@ public class WasteType {
     public WasteType() {
     }
 
-    public WasteType(int id, String waste_type, String cost) {
+    public WasteType(int id, String waste_type) {
         this.id = id;
         this.waste_type = waste_type;
-        this.cost = cost;
     }
 
 
