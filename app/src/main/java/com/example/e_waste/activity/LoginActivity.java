@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     private void AuthToken(TokenRequest tokenRequest){
         SharedPreferences sharedPreferences = getSharedPreferences("my_app", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        Call<TokenResponse> tokenRequestCall = ApiService.getTicketApiService().getAuthToken(tokenRequest);
+        Call<TokenResponse> tokenRequestCall = ApiService.getWasteApiService().getAuthToken(tokenRequest);
         tokenRequestCall.enqueue(new Callback<TokenResponse>() {
             @Override
             public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {

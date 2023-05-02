@@ -18,13 +18,13 @@ public class ApiService {
                 .addInterceptor(httpLoggingInterceptor)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.8.105:8000")
+                .baseUrl("http://192.168.88.81:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
         return retrofit;
     }
-    public static WasteInterface getTicketApiService()
+    public static WasteInterface getWasteApiService()
     {
         WasteInterface wasteInterface = getRetrofit().create( WasteInterface.class);
         return wasteInterface;

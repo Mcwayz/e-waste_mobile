@@ -87,7 +87,7 @@ public class RegistrationActivity extends AppCompatActivity {
     // Function that registers a user
 
     private void UserRegistration(UserRequest userRequest){
-        Call<UserResponse> userRequestCall = ApiService.getTicketApiService().getUser(userRequest);
+        Call<UserResponse> userRequestCall = ApiService.getWasteApiService().getUser(userRequest);
         userRequestCall.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -98,7 +98,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     user_id = userResponse.getUser_id();
                     status = userResponse.getStatus();
                     dialog.dismiss();
-                        Toast.makeText(RegistrationActivity.this, "Registration Successful, Try Again!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistrationActivity.this, "Registration:"+status+" "+user_id, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();

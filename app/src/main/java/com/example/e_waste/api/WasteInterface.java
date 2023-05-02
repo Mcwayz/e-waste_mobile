@@ -1,6 +1,8 @@
 package com.example.e_waste.api;
 import com.example.e_waste.model.CollectionRequest;
 import com.example.e_waste.model.CollectionResponse;
+import com.example.e_waste.model.ProfileRequest;
+import com.example.e_waste.model.ProfileResponse;
 import com.example.e_waste.model.SubscriptionRequest;
 import com.example.e_waste.model.SubscriptionResponse;
 import com.example.e_waste.model.TokenRequest;
@@ -15,6 +17,8 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface WasteInterface {
+
+    String base_url = "http://192.168.88.81:8000";
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json"
@@ -39,4 +43,9 @@ public interface WasteInterface {
     // Login Endpoint
     @POST("/api/token/")
     Call<TokenResponse> getAuthToken(@Body TokenRequest tokenRequest);
+
+    // Profile Endpoint
+
+    @POST
+    Call<ProfileResponse> updateProfile(@Body ProfileRequest profileRequest);
 }
