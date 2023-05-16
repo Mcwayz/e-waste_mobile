@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.e_waste.MainActivity;
 import com.example.e_waste.R;
 import com.example.e_waste.model.authentication.TokenRequest;
 import com.example.e_waste.model.authentication.TokenResponse;

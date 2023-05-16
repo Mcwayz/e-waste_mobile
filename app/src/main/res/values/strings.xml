@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">e-Waste</string>
+    <string name="subscription">Subscription</string>
+    <string name="selected_option">Selected Option</string>
 </resources>

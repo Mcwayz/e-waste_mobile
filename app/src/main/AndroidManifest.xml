@@ -23,7 +23,7 @@
             android:name=".activity.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="false"
             tools:ignore="MissingClass" />
         <activity

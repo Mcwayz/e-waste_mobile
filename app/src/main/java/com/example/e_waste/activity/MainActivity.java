@@ -1,25 +1,18 @@
-package com.example.e_waste;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.cardview.widget.CardView;
+package com.example.e_waste.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.e_waste.activity.CollectionActivity;
-import com.example.e_waste.activity.LoginActivity;
-import com.example.e_waste.activity.ProfileActivity;
-import com.example.e_waste.activity.SubscribeActivity;
-import com.example.e_waste.activity.HistoryActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.cardview.widget.CardView;
+import com.example.e_waste.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import io.paperdb.Paper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -108,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
             popupMenu.show();
         });
+
 
     }
 
