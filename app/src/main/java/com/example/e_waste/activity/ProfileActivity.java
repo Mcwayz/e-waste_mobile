@@ -2,16 +2,22 @@ package com.example.e_waste.activity;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.auth0.jwt.JWT;
@@ -23,9 +29,15 @@ import com.example.e_waste.model.authentication.Auth;
 import com.example.e_waste.model.profile.ProfileRequest;
 import com.example.e_waste.model.profile.ProfileResponse;
 import com.example.e_waste.service.ApiService;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.material.textfield.TextInputEditText;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,8 +45,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileActivity extends AppCompatActivity {
-    private FusedLocationProviderClient fusedLocationClient;
+public class ProfileActivity extends AppCompatActivity implements LocationListener {
+    private static final int PERMISSION_REQUEST_CODE = 1;
+    private LocationManager locationManager;
+
     private double latitude;
     private double longitude;
     private Dialog dialog;
@@ -42,18 +56,25 @@ public class ProfileActivity extends AppCompatActivity {
     private String auth_id;
 
     private Button update;
-    private EditText p_address, position;
+
+    private ImageView imgBack;
+    private TextInputEditText p_address, position, auth_t;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        p_address = findViewById(R.id.address);
-        position = findViewById(R.id.location);
+        p_address = findViewById(R.id.tf_address);
+        position = findViewById(R.id.tf_location);
         update = findViewById(R.id.btn_update);
+        imgBack = findViewById(R.id.img_back_mno);
+        auth_t = findViewById(R.id.tf_auth);
+        // Initialize LocationManager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         Auth auth = new Auth(getApplicationContext());
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         auth.startRunnable();
         String token = auth.getToken();
 
@@ -66,15 +87,39 @@ public class ProfileActivity extends AppCompatActivity {
             Map<String, Claim> claims = jwt.getClaims();
             auth_id = String.valueOf(claims.get("user_id"));
             Log.d("TAG", "Auth ID: " + auth_id);
-            String subjectWithoutQuotes = auth_id.replace("\"", "");
+            String IdWithoutQuotes = auth_id.replace("\"", "");
+            auth_t.setText(auth_id);
         } catch (JWTDecodeException exception){
             Log.e("TAG", "Invalid JWT token: " + exception.getMessage());
         }
 
 
+
+
         update.setOnClickListener(v -> validate());
 
         position.setOnClickListener(v -> getLocation());
+
+        imgBack.setOnClickListener(v -> {
+            Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        });
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            // Request runtime permissions
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PERMISSION_REQUEST_CODE);
+            return;
+        }
+
+        // Request location updates
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
     }
 
@@ -83,12 +128,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void validate(){
         String usr_address, usr_position;
-        usr_address = p_address.getText().toString();
-        usr_position = position.getText().toString();
+        usr_address = Objects.requireNonNull(p_address.getText()).toString();
         if (TextUtils.isEmpty(usr_address)) {
             Toast.makeText(this, "Please Enter Address", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(usr_position)) {
-            Toast.makeText(this, "Please Select Your Location!", Toast.LENGTH_SHORT).show();
         }else {
             updateProfile(getDetails());
             dialog = new Dialog(ProfileActivity.this);
@@ -100,21 +142,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     // Function that gets the current location of the device
-    @SuppressLint("MissingPermission")
-    private void getLocation() {
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, location -> {
-                    if (location != null) {
-                        latitude = location.getLatitude();
-                        longitude = location.getLongitude();
-                        // Do something with the latitude and longitude
-                        Log.d("Location", "Latitude: " + latitude + ", Longitude: " + longitude);
-                        position.setText(latitude+" "+longitude);
-                    } else {
-                        Log.d("Location", "Location is null");
-                    }
-                }).addOnFailureListener(this, e -> Log.e("Location", "Error getting location", e));
-    }
+
 
 
     // Function that posts user profile details
@@ -123,11 +151,11 @@ public class ProfileActivity extends AppCompatActivity {
         ProfileRequest profileRequest = new ProfileRequest();
         if(Objects.requireNonNull(p_address.getText()).toString().equals("")) {
             Toast.makeText(this, "Please Enter User Address", Toast.LENGTH_SHORT).show();
-        }else if(Objects.requireNonNull(position.getText()).toString().equals("")){
-            Toast.makeText(this, "Please Enter Firstname", Toast.LENGTH_SHORT).show();
+        }else if(Objects.requireNonNull(auth_t.getText()).toString().equals("")){
+            Toast.makeText(this, "Please Enter User ID", Toast.LENGTH_SHORT).show();
         }else{
             profileRequest.setAddress(p_address.getText().toString());
-            profileRequest.setAuth(Integer.parseInt(auth_id));
+            profileRequest.setAuth_id(Integer.parseInt(auth_id));
             profileRequest.setLatitude(latitude);
             profileRequest.setLongitude(longitude);
         }
@@ -152,9 +180,11 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.d(TAG, "Auth ID: "+auth);
                         Toast.makeText(ProfileActivity.this, "Profile Updated Successfully", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        goBack();
                     }else{
                         Toast.makeText(ProfileActivity.this, "Profile Update Failed", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        goBack();
                     }
                 }
             }
@@ -168,6 +198,65 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    private void getLocation(){
+
+    }
 
 
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        position.setText(latitude + " " + longitude);
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+        LocationListener.super.onLocationChanged(locations);
+    }
+
+    @Override
+    public void onFlushComplete(int requestCode) {
+        LocationListener.super.onFlushComplete(requestCode);
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                                == PackageManager.PERMISSION_GRANTED) {
+
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                }
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    private void goBack(){
+        Intent i = new Intent(ProfileActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
 }

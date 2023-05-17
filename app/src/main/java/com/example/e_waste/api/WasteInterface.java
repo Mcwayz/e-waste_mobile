@@ -18,7 +18,7 @@ import retrofit2.http.POST;
 
 public interface WasteInterface {
 
-    String base_url = "http://192.168.8.111:8000";
+    String base_url = "http://192.168.8.104:8000";
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json"
@@ -45,6 +45,6 @@ public interface WasteInterface {
     Call<TokenResponse> getAuthToken(@Body TokenRequest tokenRequest);
 
     // Profile Endpoint
-    @POST
+    @POST("/api/add-profile")
     Call<ProfileResponse> updateProfile(@Body ProfileRequest profileRequest);
 }

@@ -5,18 +5,17 @@ public class ProfileRequest {
     private String address;
     private Double longitude;
     private Double latitude;
-    private int auth;
+    private int auth_id;
 
     public ProfileRequest() {
 
     }
 
-
-    public ProfileRequest(String address, Double longitude, Double latitude, int auth) {
+    public ProfileRequest(String address, Double longitude, Double latitude, int auth_id) {
         this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.auth = auth;
+        this.auth_id = auth_id;
     }
 
     public String getAddress() {
@@ -43,12 +42,12 @@ public class ProfileRequest {
         this.latitude = latitude;
     }
 
-    public int getAuth() {
-        return auth;
+    public int getAuth_id() {
+        return auth_id;
     }
 
-    public void setAuth(int auth) {
-        this.auth = auth;
+    public void setAuth_id(int auth_id) {
+        this.auth_id = auth_id;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class ProfileRequest {
                 "address='" + address + '\'' +
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
-                ", auth=" + auth +
+                ", auth_id=" + auth_id +
                 '}';
     }
 }
