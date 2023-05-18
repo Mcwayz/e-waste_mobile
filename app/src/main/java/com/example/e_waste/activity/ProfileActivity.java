@@ -127,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
     // Function that validates user entries
 
     private void validate(){
-        String usr_address, usr_position;
+        String usr_address;
         usr_address = Objects.requireNonNull(p_address.getText()).toString();
         if (TextUtils.isEmpty(usr_address)) {
             Toast.makeText(this, "Please Enter Address", Toast.LENGTH_SHORT).show();

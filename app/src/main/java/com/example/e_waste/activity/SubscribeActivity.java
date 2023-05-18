@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -24,6 +26,7 @@ import com.example.e_waste.R;
 import com.example.e_waste.api.WasteInterface;
 import com.example.e_waste.model.WasteType;
 import com.example.e_waste.model.authentication.Auth;
+import com.example.e_waste.model.collections.CollectionResponse;
 import com.example.e_waste.model.subscriptions.SubscriptionRequest;
 import com.example.e_waste.model.subscriptions.SubscriptionResponse;
 import com.example.e_waste.service.ApiService;
@@ -33,9 +36,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +54,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class SubscribeActivity extends AppCompatActivity {
     private Dialog dialog;
     private int wasteTypeId;
+    private String currentDate;
+    private int auth_id_user;
     private TextInputEditText tfID;
     private ImageView  imgBack;
     private TextView option;
@@ -53,6 +63,27 @@ public class SubscribeActivity extends AppCompatActivity {
 
     private Button subscribe;
     private ArrayList<String> getWasteType = new ArrayList<>();
+
+    public static String getCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d'" + getDayOfMonthSuffix(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) + "'", Locale.getDefault());
+        return dateFormat.format(new Date());
+    }
+
+    private static String getDayOfMonthSuffix(int day) {
+        if (day >= 11 && day <= 13) {
+            return "th";
+        }
+        switch (day % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +93,7 @@ public class SubscribeActivity extends AppCompatActivity {
         tfID = findViewById(R.id.tf_auth);
         imgBack = findViewById(R.id.img_back_mno);
         subscribe = findViewById(R.id.btn_subscribe);
+        currentDate = getCurrentDate();
         Auth auth = new Auth(getApplicationContext());
         String token = auth.getToken();
         auth.startRunnable();
@@ -77,6 +109,7 @@ public class SubscribeActivity extends AppCompatActivity {
             Log.d("TAG", "Auth ID: " + auth_id);
             String IdWithoutQuotes = auth_id.replace("\"", "");
             tfID.setText(IdWithoutQuotes);
+            auth_id_user = Integer.parseInt(IdWithoutQuotes);
         } catch (JWTDecodeException exception){
             Log.e("TAG", "Invalid JWT token: " + exception.getMessage());
         }
@@ -88,12 +121,42 @@ public class SubscribeActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         });
+
+        subscribe.setOnClickListener(v -> validate());
     }
 
 
 
     private void validate(){
+        String waste_type;
+        waste_type = Objects.requireNonNull(tfWasteType.getText()).toString();
+        if (TextUtils.isEmpty(waste_type)) {
+            Toast.makeText(this, "Please Select Waste Type", Toast.LENGTH_SHORT).show();
+        }else {
+            makeSubscription(getDetails());
+            dialog = new Dialog(SubscribeActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialog_wait2);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
+    }
 
+
+    private SubscriptionRequest getDetails()
+    {
+        SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
+        String waste_type;
+        waste_type = Objects.requireNonNull(tfWasteType.getText()).toString();
+        if (TextUtils.isEmpty(waste_type)) {
+            Toast.makeText(this, "Please Select Waste Type", Toast.LENGTH_SHORT).show();
+        }else {
+            subscriptionRequest.setUser(auth_id_user);
+            subscriptionRequest.setWaste(wasteTypeId);
+            subscriptionRequest.setSub_date(currentDate);
+        }
+
+        return subscriptionRequest;
     }
 
 
@@ -105,8 +168,18 @@ public class SubscribeActivity extends AppCompatActivity {
             public void onResponse(Call<SubscriptionResponse> call, Response<SubscriptionResponse> response) {
 
                 if(response.isSuccessful()){
-
-
+                    String sub_date; int sub;
+                    SubscriptionResponse subscription = response.body();
+                    sub = subscription.getSub_id();
+                    sub_date = subscription.getSub_date();
+                    if(sub > 0){
+                        Toast.makeText(SubscribeActivity.this, "Collection Request Sent!: "+sub_date, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }else {
+                        Toast.makeText(SubscribeActivity.this, "Failed to Reach the Server", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        goBack();
+                    }
                 }
             }
 
@@ -114,6 +187,7 @@ public class SubscribeActivity extends AppCompatActivity {
             public void onFailure(Call<SubscriptionResponse> call, Throwable t) {
                 Toast.makeText(SubscribeActivity.this, "Subscription Request Failed" +t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
+                goBack();
             }
         });
 
@@ -178,5 +252,11 @@ public class SubscribeActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void goBack(){
+        Intent i = new Intent(SubscribeActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }

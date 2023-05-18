@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:paddingBottom="16dp"
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/img_his_qrc"
+            android:layout_width="64dp"
+            android:layout_height="86dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/cash" />
+
+        <TextView
+            android:id="@+id/tv_ticket_id_his"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="90dp"
+            android:text="Sub ID"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_ticket_type_his"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_ticket_id_his"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="90dp"
+            android:text="Waste Type"
+            android:textColor="@color/blue"
+            android:textSize="10sp"
+            android:layout_alignParentStart="true"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_price_his"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="50dp"
+            android:text="0"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            />
+
+        <TextView
+            android:id="@+id/tv_txn_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="47dp"
+            android:layout_below="@id/tv_price_his"
+            android:text="1"
+            android:textColor="@color/blue"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            />
+
+        <ImageView
+            android:id="@+id/img_person"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@id/img_his_qrc"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_person" />
+
+        <TextView
+            android:id="@+id/tv_adult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_his_qrc"
+            android:layout_toRightOf="@id/img_person"
+            android:layout_marginLeft="1dp"
+            android:text="Firstname :"
+            android:textColor="@color/blue"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tv_adult_slot_his"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_his_qrc"
+            android:layout_toRightOf="@id/tv_adult"
+            android:layout_marginLeft="3dp"
+            android:text="--"
+            android:textColor="@color/blue"
+            android:textSize="10sp"
+            />
+
+
+        <ImageView
+            android:id="@+id/img_person_1"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_toRightOf="@id/tv_adult_slot_his"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/img_his_qrc"
+            android:src="@drawable/ic_person" />
+
+        <TextView
+            android:id="@+id/tv_child"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_his_qrc"
+            android:layout_toRightOf="@id/img_person_1"
+            android:layout_marginLeft="1dp"
+            android:text="Lastname :"
+            android:textColor="@color/blue"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tv_children_slot_his"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_his_qrc"
+            android:layout_toRightOf="@id/tv_child"
+            android:layout_marginLeft="3dp"
+            android:text="---"
+            android:textColor="@color/blue"
+            android:textSize="10sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_date_his"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_his_qrc"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="100dp"
+            android:text="Date"
+            android:textColor="@color/blue"
+            android:textSize="10sp"
+            />
+
+        <ImageView
+            android:id="@+id/img_calender"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_toLeftOf="@id/tv_date_his"
+            android:layout_marginRight="20dp"
+            android:layout_below="@id/img_his_qrc"
+            android:src="@drawable/ic_calendar" />
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
