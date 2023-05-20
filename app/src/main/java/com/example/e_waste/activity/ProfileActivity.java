@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,8 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.e_waste.R;
 import com.example.e_waste.model.authentication.Auth;
+import com.example.e_waste.model.profile.DetailsRequest;
+import com.example.e_waste.model.profile.DetailsResponse;
 import com.example.e_waste.model.profile.ProfileRequest;
 import com.example.e_waste.model.profile.ProfileResponse;
 import com.example.e_waste.service.ApiService;
@@ -48,15 +51,12 @@ import retrofit2.Response;
 public class ProfileActivity extends AppCompatActivity implements LocationListener {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
-
     private double latitude;
     private double longitude;
     private Dialog dialog;
-
     private String auth_id;
-
+    private int user_id;
     private Button update;
-
     private ImageView imgBack;
     private TextInputEditText p_address, position, auth_t;
 
@@ -72,9 +72,7 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
         auth_t = findViewById(R.id.tf_auth);
         // Initialize LocationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         Auth auth = new Auth(getApplicationContext());
-
         auth.startRunnable();
         String token = auth.getToken();
 
@@ -89,17 +87,14 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
             Log.d("TAG", "Auth ID: " + auth_id);
             String IdWithoutQuotes = auth_id.replace("\"", "");
             auth_t.setText(auth_id);
+            auth_id = IdWithoutQuotes;
+            getProfile();
         } catch (JWTDecodeException exception){
             Log.e("TAG", "Invalid JWT token: " + exception.getMessage());
         }
 
-
-
-
         update.setOnClickListener(v -> validate());
-
         position.setOnClickListener(v -> getLocation());
-
         imgBack.setOnClickListener(v -> {
             Intent i = new Intent(ProfileActivity.this, MainActivity.class);
             startActivity(i);
@@ -120,7 +115,7 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
 
         // Request location updates
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
+        getProfile();
     }
 
 
@@ -140,13 +135,7 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
             dialog.show();
         }
     }
-
-    // Function that gets the current location of the device
-
-
-
     // Function that posts user profile details
-
     private ProfileRequest getDetails(){
         ProfileRequest profileRequest = new ProfileRequest();
         if(Objects.requireNonNull(p_address.getText()).toString().equals("")) {
@@ -161,10 +150,7 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
         }
         return profileRequest;
     }
-
-
     // Function that updates profile details
-
     private void updateProfile(ProfileRequest profileRequest)
     {
         Call<ProfileResponse> call = ApiService.getWasteApiService().updateProfile(profileRequest);
@@ -201,40 +187,32 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
     private void getLocation(){
 
     }
-
-
     @Override
     public void onLocationChanged(@NonNull Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
         position.setText(latitude + " " + longitude);
     }
-
     @Override
     public void onLocationChanged(@NonNull List<Location> locations) {
         LocationListener.super.onLocationChanged(locations);
     }
-
     @Override
     public void onFlushComplete(int requestCode) {
         LocationListener.super.onFlushComplete(requestCode);
     }
-
     @Override
     public void onProviderEnabled(@NonNull String provider) {
         LocationListener.super.onProviderEnabled(provider);
     }
-
     @Override
     public void onProviderDisabled(@NonNull String provider) {
         LocationListener.super.onProviderDisabled(provider);
     }
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -252,11 +230,50 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
             }
         }
     }
-
-
     private void goBack(){
         Intent i = new Intent(ProfileActivity.this, MainActivity.class);
         startActivity(i);
         finish();
     }
+    private void getProfile(){
+        Call<DetailsResponse> detailsResponseCall = ApiService.getWasteApiService().getProfile(Integer.parseInt(auth_id));
+        detailsResponseCall.enqueue(new Callback<DetailsResponse>() {
+            @Override
+            public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
+                if(response.isSuccessful()){
+                    DetailsResponse detailsResponse = response.body();
+                    if (detailsResponse != null) {
+                        String address = detailsResponse.getAddress();
+                        String firstname = detailsResponse.getFirstname();
+                        String lastname = detailsResponse.getLastname();
+                        String email = detailsResponse.getEmail();
+                        int user_id = detailsResponse.getUser_id();
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                        builder.setTitle("Profile Details");
+                        builder.setMessage("First Name : " +firstname+ " \n" +
+                                "Last Name : " +lastname+ " \n" +
+                                "Set Email : " +email+ " \n" +
+                                "Set Address : " +address
+                        );
+                        auth_t.setText(String.valueOf(user_id));
+                        p_address.setText(address);
+                        builder.setPositiveButton("Okay", (dialog, which) -> {
+                            dialog.dismiss();
+                        });
+                        builder.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DetailsResponse> call, Throwable t) {
+                Toast.makeText(ProfileActivity.this, "Error Returning User Profile" +t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                goBack();
+            }
+        });
+    }
+
+
 }

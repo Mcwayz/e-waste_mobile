@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.auth0.jwt.JWT;
@@ -36,6 +37,7 @@ public class CollectionActivity extends AppCompatActivity {
     private Button request;
     private Dialog dialog;
     private TextInputEditText sub_id;
+    private ImageView imgBack;
     private TextInputEditText request_date;
     private TextInputEditText request_time;
 
@@ -47,6 +49,7 @@ public class CollectionActivity extends AppCompatActivity {
         sub_id = findViewById(R.id.tf_id);
         request_date = findViewById(R.id.tf_request_date);
         request_time = findViewById(R.id.tf_request_time);
+        imgBack = findViewById(R.id.img_back_mno);
         Auth auth = new Auth(getApplicationContext());
         String token = auth.getToken();
         auth.startRunnable();
@@ -67,6 +70,12 @@ public class CollectionActivity extends AppCompatActivity {
         }
 
         request.setOnClickListener(v -> validate());
+
+        imgBack.setOnClickListener(v -> {
+            Intent i = new Intent(CollectionActivity.this, MainActivity.class);
+            startActivity(i);
+            finish();
+        });
     }
 
     private void validate(){

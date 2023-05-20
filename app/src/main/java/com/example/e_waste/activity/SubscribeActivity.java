@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,9 @@ import com.example.e_waste.api.WasteInterface;
 import com.example.e_waste.model.WasteType;
 import com.example.e_waste.model.authentication.Auth;
 import com.example.e_waste.model.collections.CollectionResponse;
+import com.example.e_waste.model.profile.DetailsRequest;
+import com.example.e_waste.model.profile.DetailsResponse;
+import com.example.e_waste.model.profile.ProfileRequest;
 import com.example.e_waste.model.subscriptions.SubscriptionRequest;
 import com.example.e_waste.model.subscriptions.SubscriptionResponse;
 import com.example.e_waste.service.ApiService;
@@ -55,7 +59,7 @@ public class SubscribeActivity extends AppCompatActivity {
     private Dialog dialog;
     private int wasteTypeId;
     private String currentDate;
-    private int auth_id_user;
+    private int auth_id_user, user_id;
     private TextInputEditText tfID;
     private ImageView  imgBack;
     private TextView option;
@@ -108,7 +112,6 @@ public class SubscribeActivity extends AppCompatActivity {
             String auth_id = String.valueOf(claims.get("user_id"));
             Log.d("TAG", "Auth ID: " + auth_id);
             String IdWithoutQuotes = auth_id.replace("\"", "");
-            tfID.setText(IdWithoutQuotes);
             auth_id_user = Integer.parseInt(IdWithoutQuotes);
         } catch (JWTDecodeException exception){
             Log.e("TAG", "Invalid JWT token: " + exception.getMessage());
@@ -123,6 +126,7 @@ public class SubscribeActivity extends AppCompatActivity {
         });
 
         subscribe.setOnClickListener(v -> validate());
+        getProfile();
     }
 
 
@@ -151,11 +155,9 @@ public class SubscribeActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(waste_type)) {
             Toast.makeText(this, "Please Select Waste Type", Toast.LENGTH_SHORT).show();
         }else {
-            subscriptionRequest.setUser(auth_id_user);
+            subscriptionRequest.setUser(user_id);
             subscriptionRequest.setWaste(wasteTypeId);
-            subscriptionRequest.setSub_date(currentDate);
         }
-
         return subscriptionRequest;
     }
 
@@ -192,10 +194,6 @@ public class SubscribeActivity extends AppCompatActivity {
         });
 
     }
-
-
-
-
 
     private void getWasteType(){
         Retrofit retrofit = new Retrofit.Builder()
@@ -253,10 +251,49 @@ public class SubscribeActivity extends AppCompatActivity {
             }
         });
     }
-
     private void goBack(){
         Intent i = new Intent(SubscribeActivity.this, MainActivity.class);
         startActivity(i);
         finish();
     }
+
+    private void getProfile(){
+        Call<DetailsResponse> detailsResponseCall = ApiService.getWasteApiService().getProfile(auth_id_user);
+        detailsResponseCall.enqueue(new Callback<DetailsResponse>() {
+            @Override
+            public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
+                if(response.isSuccessful()){
+                    DetailsResponse detailsResponse = response.body();
+                    if (detailsResponse != null) {
+                        String address = detailsResponse.getAddress();
+                        String firstname = detailsResponse.getFirstname();
+                        String lastname = detailsResponse.getLastname();
+                        String email = detailsResponse.getEmail();
+                        int user_id = detailsResponse.getUser_id();
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SubscribeActivity.this);
+                        builder.setTitle("Profile Details");
+                        builder.setMessage("First Name : " +firstname+ " \n" +
+                                "Last Name : " +lastname+ " \n" +
+                                "Set Email : " +email+ " \n" +
+                                "Set Address : " +address
+                        );
+                        tfID.setText(String.valueOf(user_id));
+                        builder.setPositiveButton("Okay", (dialog, which) -> {
+                            dialog.dismiss();
+                        });
+                        builder.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DetailsResponse> call, Throwable t) {
+                Toast.makeText(SubscribeActivity.this, "Error Returning User Profile" +t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                goBack();
+            }
+        });
+    }
+
 }

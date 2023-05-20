@@ -18,7 +18,7 @@ public class ApiService {
                 .addInterceptor(httpLoggingInterceptor)
                 .build();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.8.104:8000")
+                .baseUrl("http://192.168.8.106:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
