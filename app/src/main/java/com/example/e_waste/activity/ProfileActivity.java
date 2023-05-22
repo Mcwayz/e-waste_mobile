@@ -262,6 +262,14 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
                             dialog.dismiss();
                         });
                         builder.show();
+                    }else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                        builder.setTitle("No Profile Details");
+                        builder.setMessage("Provide Profile Details");
+                        builder.setPositiveButton("Okay", (dialog, which) -> {
+                            dialog.dismiss();
+                        });
+                        builder.show();
                     }
                 }
             }

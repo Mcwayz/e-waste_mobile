@@ -270,7 +270,6 @@ public class SubscribeActivity extends AppCompatActivity {
                         String lastname = detailsResponse.getLastname();
                         String email = detailsResponse.getEmail();
                         int user_id = detailsResponse.getUser_id();
-
                         AlertDialog.Builder builder = new AlertDialog.Builder(SubscribeActivity.this);
                         builder.setTitle("Profile Details");
                         builder.setMessage("First Name : " +firstname+ " \n" +
@@ -281,6 +280,16 @@ public class SubscribeActivity extends AppCompatActivity {
                         tfID.setText(String.valueOf(user_id));
                         builder.setPositiveButton("Okay", (dialog, which) -> {
                             dialog.dismiss();
+                        });
+                        builder.show();
+                    }else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SubscribeActivity.this);
+                        builder.setTitle("No Profile Details");
+                        builder.setMessage("Provide Profile Details in the Profile Section Before Subscribing!");
+                        builder.setPositiveButton("Okay", (dialog, which) -> {
+                            dialog.dismiss();
+                            Intent intent = new Intent(SubscribeActivity.this, ProfileActivity.class);
+                            startActivity(intent);
                         });
                         builder.show();
                     }
