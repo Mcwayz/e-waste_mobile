@@ -5,6 +5,7 @@ import com.example.e_waste.model.profile.DetailsRequest;
 import com.example.e_waste.model.profile.DetailsResponse;
 import com.example.e_waste.model.profile.ProfileRequest;
 import com.example.e_waste.model.profile.ProfileResponse;
+import com.example.e_waste.model.subscriptions.SubsResponse;
 import com.example.e_waste.model.subscriptions.SubscriptionRequest;
 import com.example.e_waste.model.subscriptions.SubscriptionResponse;
 import com.example.e_waste.model.authentication.TokenRequest;
@@ -21,7 +22,7 @@ import retrofit2.http.Path;
 
 public interface WasteInterface {
 
-    String base_url = "http://192.168.8.106:8000";
+    String base_url = "http://192.168.1.79:8000";
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json"
@@ -51,6 +52,14 @@ public interface WasteInterface {
     @POST("/api/add-profile")
     Call<ProfileResponse> updateProfile(@Body ProfileRequest profileRequest);
 
+    // Profile Details Endpoint
     @GET("/api/profile-details/{authId}/")
     Call<DetailsResponse> getProfile(@Path("authId") int authId);
+
+    // My Subscription Endpoint
+    @GET("/api/profile-details/{authId}/")
+    Call<SubsResponse> getSubscriptions(@Path("authId") int authId);
+
+
+
 }

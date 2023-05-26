@@ -33,12 +33,12 @@
             android:src="@drawable/cash" />
 
         <TextView
-            android:id="@+id/tv_ticket_id_his"
+            android:id="@+id/tv_sub_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="90dp"
-            android:text="Sub ID"
+            android:text="Subscription ID"
             android:textColor="@color/blue"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -46,10 +46,10 @@
             />
 
         <TextView
-            android:id="@+id/tv_ticket_type_his"
+            android:id="@+id/tv_waste_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_ticket_id_his"
+            android:layout_below="@+id/tv_sub_id"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="90dp"
             android:text="Waste Type"
@@ -96,7 +96,7 @@
             android:src="@drawable/ic_person" />
 
         <TextView
-            android:id="@+id/tv_adult"
+            android:id="@+id/tv_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_his_qrc"
@@ -109,11 +109,11 @@
             />
 
         <TextView
-            android:id="@+id/tv_adult_slot_his"
+            android:id="@+id/tv_first_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_his_qrc"
-            android:layout_toRightOf="@id/tv_adult"
+            android:layout_toRightOf="@id/tv_first"
             android:layout_marginLeft="3dp"
             android:text="--"
             android:textColor="@color/blue"
@@ -125,13 +125,13 @@
             android:id="@+id/img_person_1"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_toRightOf="@id/tv_adult_slot_his"
+            android:layout_toRightOf="@id/tv_first_name"
             android:layout_marginLeft="10dp"
             android:layout_below="@id/img_his_qrc"
             android:src="@drawable/ic_person" />
 
         <TextView
-            android:id="@+id/tv_child"
+            android:id="@+id/tv_last"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_his_qrc"
@@ -144,11 +144,11 @@
             />
 
         <TextView
-            android:id="@+id/tv_children_slot_his"
+            android:id="@+id/tv_lastname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_his_qrc"
-            android:layout_toRightOf="@id/tv_child"
+            android:layout_toRightOf="@id/tv_last"
             android:layout_marginLeft="3dp"
             android:text="---"
             android:textColor="@color/blue"
