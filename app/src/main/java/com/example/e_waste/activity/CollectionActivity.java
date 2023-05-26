@@ -189,10 +189,6 @@ public class CollectionActivity extends AppCompatActivity {
         } else {
             collectionRequest.setUser_id(Integer.parseInt(sub_id.getText().toString()));
             collectionRequest.setIs_collected(false);
-            /*collectionRequest.setRequest_date(r_date+" "+r_time);
-            collectionRequest.setCollection_date(r_date+" "+r_time);
-            collectionRequest.setRequest_date("");
-            collectionRequest.setCollection_date("");*/
         }
         return collectionRequest;
     }
