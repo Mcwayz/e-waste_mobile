@@ -81,7 +81,7 @@
             android:layout_below="@id/tv_price_his"
             android:text="1"
             android:textColor="@color/blue"
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:layout_alignParentEnd="true"
             />
@@ -117,7 +117,7 @@
             android:layout_marginLeft="3dp"
             android:text="--"
             android:textColor="@color/blue"
-            android:textSize="10sp"
+            android:textSize="9sp"
             />
 
 
@@ -150,9 +150,9 @@
             android:layout_below="@id/img_his_qrc"
             android:layout_toRightOf="@id/tv_last"
             android:layout_marginLeft="3dp"
-            android:text="---"
+            android:text="--"
             android:textColor="@color/blue"
-            android:textSize="10sp"
+            android:textSize="9sp"
             />
 
         <TextView
@@ -162,10 +162,11 @@
             android:layout_below="@id/img_his_qrc"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="100dp"
-            android:text="Date"
+            android:text="--"
             android:textColor="@color/blue"
-            android:textSize="10sp"
+            android:textSize="9sp"
             />
+
 
         <ImageView
             android:id="@+id/img_calender"

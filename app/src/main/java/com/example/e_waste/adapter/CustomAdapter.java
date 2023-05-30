@@ -11,26 +11,23 @@ import com.example.e_waste.R;
 import com.example.e_waste.api.RecyclerViewInterface;
 import java.util.ArrayList;
 
-
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> implements RecyclerViewInterface {
-    private final RecyclerViewInterface recyclerViewInterface;
-    private final Context context;
-    private ArrayList sub_id, firstname, lastname, waste_type, address, price, date, auth_id;
+    private RecyclerViewInterface recyclerViewInterface;
+    private Context context;
+    private ArrayList sub_id, firstname, lastname, waste_type,  price, date;
 
     public CustomAdapter(Context context, ArrayList sub_id, ArrayList firstname, ArrayList lastname,
-        ArrayList waste_type, ArrayList address, ArrayList price, ArrayList date, ArrayList auth_id,  RecyclerViewInterface recyclerViewInterface) {
+        ArrayList waste_type, ArrayList price, ArrayList date,
+        RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.sub_id = sub_id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.waste_type = waste_type;
-        this.address = address;
         this.price = price;
         this.date = date;
-        this.auth_id = auth_id;
         this.recyclerViewInterface = recyclerViewInterface;
     }
-
 
     @NonNull
     @Override
@@ -70,7 +67,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             tvDate = itemView.findViewById(R.id.tv_date_his);
             tvFirstname = itemView.findViewById(R.id.tv_first_name);
             tvLastname = itemView.findViewById(R.id.tv_lastname);
-
 
             itemView.setOnClickListener(v -> {
                 if(recyclerViewInterface != null){

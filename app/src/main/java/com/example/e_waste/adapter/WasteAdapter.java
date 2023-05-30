@@ -1,16 +1,15 @@
 package com.example.e_waste.adapter;
 
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.e_waste.R;
+import com.example.e_waste.model.subscriptions.SubsResponse;
 import com.example.e_waste.model.subscriptions.Subscription;
 
 import java.util.List;
@@ -46,11 +45,8 @@ public class WasteAdapter extends RecyclerView.Adapter<WasteAdapter.ViewHolder> 
         return subscriptionList.size();
     }
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView tvSubId, tvWasteType, tvFirstName, tvLastName, tvDate, tvPrice;
-
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvSubId = itemView.findViewById(R.id.tv_sub_id);
@@ -59,7 +55,6 @@ public class WasteAdapter extends RecyclerView.Adapter<WasteAdapter.ViewHolder> 
             tvLastName = itemView.findViewById(R.id.lastname);
             tvPrice = itemView.findViewById(R.id.tv_price_his);
             tvDate = itemView.findViewById(R.id.tv_date_his);
-
         }
     }
 }

@@ -150,12 +150,13 @@ public class SubscribeActivity extends AppCompatActivity {
     private SubscriptionRequest getDetails()
     {
         SubscriptionRequest subscriptionRequest = new SubscriptionRequest();
-        String waste_type;
+        String waste_type, sub_id;
+        sub_id = Objects.requireNonNull(tfID.getText()).toString();
         waste_type = Objects.requireNonNull(tfWasteType.getText()).toString();
         if (TextUtils.isEmpty(waste_type)) {
             Toast.makeText(this, "Please Select Waste Type", Toast.LENGTH_SHORT).show();
         }else {
-            subscriptionRequest.setUser(user_id);
+            subscriptionRequest.setUser(Integer.parseInt(sub_id));
             subscriptionRequest.setWaste(wasteTypeId);
         }
         return subscriptionRequest;
@@ -175,12 +176,25 @@ public class SubscribeActivity extends AppCompatActivity {
                     sub = subscription.getSub_id();
                     sub_date = subscription.getSub_date();
                     if(sub > 0){
-                        Toast.makeText(SubscribeActivity.this, "Collection Request Sent!: "+sub_date, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SubscribeActivity.this);
+                        builder.setTitle("Subscription Success");
+                        builder.setMessage("Subscription Request  Has Been Sent\n" +
+                                "Our Payment Gateway is Down, We will just Collect\n" +
+                                "Cash Upon Your First Waste Collection :-(..!");
+                        builder.setPositiveButton("Okay", (dialog, which) -> {
+                            dialog.dismiss();
+                            goBack();
+                        });
                     }else {
-                        Toast.makeText(SubscribeActivity.this, "Failed to Reach the Server", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        goBack();
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SubscribeActivity.this);
+                        builder.setTitle("Subscription Failed");
+                        builder.setMessage("Failed to Reach the Server\n" +
+                                "Try Again..!");
+                        builder.setPositiveButton("Okay", (dialog, which) -> {
+                            dialog.dismiss();
+                            goBack();
+                        });
                     }
                 }
             }

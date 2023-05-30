@@ -30,6 +30,11 @@ public class Auth extends Activity {
         return sharedpreferences.getString("auth_token", "");
     }
 
+
+    public String getProfileID() {
+        return sharedpreferences.getString("profile_id", "");
+    }
+
     public Runnable runnable = new Runnable() {
         @Override
         public void run() {

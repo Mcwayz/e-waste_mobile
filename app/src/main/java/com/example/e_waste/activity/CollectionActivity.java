@@ -152,16 +152,22 @@ public class CollectionActivity extends AppCompatActivity {
                     request_date = collectionResponse.getRequest_date();
                     if(collect > 0){
                         AlertDialog.Builder builder = new AlertDialog.Builder(CollectionActivity.this);
-                        builder.setTitle("Collection Request");
+                        builder.setTitle("Request Successful");
                         builder.setMessage("Collection Request  Has Been Sent :-)..!");
                         builder.setPositiveButton("Okay", (dialog, which) -> {
-
                             dialog.dismiss();
+                            goBack();
                         });
+                        builder.show();
                     }else {
-                        Toast.makeText(CollectionActivity.this, "Failed to Reach the Server", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        goBack();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CollectionActivity.this);
+                        builder.setTitle("Collection Request Failed");
+                        builder.setMessage("Failed to Reach the Server :-(..!");
+                        builder.setPositiveButton("Okay", (dialog, which) -> {
+                            dialog.dismiss();
+                            goBack();
+                        });
+                        builder.show();
                     }
                 }
             }
