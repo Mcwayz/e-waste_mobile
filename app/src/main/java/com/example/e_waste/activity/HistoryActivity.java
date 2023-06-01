@@ -23,6 +23,7 @@ import com.example.e_waste.model.subscriptions.Subscription;
 import com.example.e_waste.service.ApiService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,7 +89,7 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
         getSubs();
     }
 
-    private void getSubs() {
+ /*   private void getSubs() {
         int prof_id = Integer.parseInt(user_id);
         Call<List<Subscription>> call = ApiService.getWasteApiService().getSubscriptions(prof_id);
         call.enqueue(new Callback<List<Subscription>>() {
@@ -123,6 +124,60 @@ public class HistoryActivity extends AppCompatActivity implements RecyclerViewIn
                 Log.d("Sub Response", "Sub Msg: " + t.getLocalizedMessage());
             }
         });
+    }*/
+
+    private void getSubs() {
+        int prof_id = Integer.parseInt(user_id);
+        Call<List<Subscription>> call = ApiService.getWasteApiService().getSubscriptions(prof_id);
+        call.enqueue(new Callback<List<Subscription>>() {
+            @Override
+            public void onResponse(Call<List<Subscription>> call, Response<List<Subscription>> response) {
+                if (response.isSuccessful()) {
+                    List<Subscription> subscriptionList = response.body();
+
+                    // Create a SimpleDateFormat instance for parsing the original date format
+                    SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.US);
+                    // Create a SimpleDateFormat instance for formatting the desired date format
+                    SimpleDateFormat desiredFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+
+                    for (Subscription subscription : subscriptionList) {
+                        address.add(subscription.getAddress());
+                        sub_date.add(formatDate(subscription.getSub_date(), originalFormat, desiredFormat));
+                        lastname.add(subscription.getLastname());
+                        firstname.add(subscription.getFirstname());
+                        waste_type.add(subscription.getWaste_type());
+                        monthly_price.add(subscription.getMonthly_price());
+                        sub_id.add(String.valueOf(subscription.getSub_id()));
+
+                        Log.d("Sub Response", "Sub ID: " + subscription.getSub_id() + ", Name: " + subscription.getFirstname() + ", Waste Type: " + subscription.getWaste_type() + ", Monthly Price: " + subscription.getMonthly_price());
+                    }
+
+                    customAdapter = new CustomAdapter(HistoryActivity.this, sub_id, firstname,
+                            lastname, waste_type, monthly_price, sub_date, HistoryActivity.this);
+                    recyclerView.setAdapter(customAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(HistoryActivity.this));
+                    Toast.makeText(HistoryActivity.this, "Your Subscription History", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Subscription>> call, Throwable t) {
+                Toast.makeText(HistoryActivity.this, "Error Fetching Data: " + t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("Sub Response", "Sub Msg: " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private String formatDate(String date, SimpleDateFormat originalFormat, SimpleDateFormat desiredFormat) {
+        try {
+            // Parse the original date string to a Date object using the original format
+            Date originalDate = originalFormat.parse(date);
+            // Format the Date object to the desired format
+            return desiredFormat.format(originalDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return date; // Return the original date string if parsing fails
+        }
     }
 
     @Override
