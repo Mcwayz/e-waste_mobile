@@ -93,15 +93,12 @@ public class RegistrationActivity extends AppCompatActivity {
                     UserResponse userResponse = response.body();
                     user_id = userResponse.getUser_id();
                     status = userResponse.getStatus();
-                    dialog.dismiss();
                         Toast.makeText(RegistrationActivity.this, "Registration:"+status+" "+user_id, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
-                        dialog.dismiss();
-                    //}
-
                 }
+                dialog.dismiss();
             }
 
             @Override
