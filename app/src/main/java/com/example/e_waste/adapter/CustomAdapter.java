@@ -7,25 +7,28 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.e_waste.R;
 import com.example.e_waste.api.RecyclerViewInterface;
+
 import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> implements RecyclerViewInterface {
     private RecyclerViewInterface recyclerViewInterface;
     private Context context;
-    private ArrayList sub_id, firstname, lastname, waste_type,  price, date;
+    private ArrayList task_id, collection_id, address, assigned_date, user_collect_date, is_collected;
 
-    public CustomAdapter(Context context, ArrayList sub_id, ArrayList firstname, ArrayList lastname,
-        ArrayList waste_type, ArrayList price, ArrayList date,
-        RecyclerViewInterface recyclerViewInterface) {
+//
+
+
+    public CustomAdapter(Context context, ArrayList task_id, ArrayList collection_id, ArrayList address, ArrayList assigned_date, ArrayList user_collect_date, ArrayList is_collected,RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
-        this.sub_id = sub_id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.waste_type = waste_type;
-        this.price = price;
-        this.date = date;
+        this.task_id = task_id;
+        this.collection_id = collection_id;
+        this.address = address;
+        this.assigned_date = assigned_date;
+        this.user_collect_date = user_collect_date;
+        this.is_collected = is_collected;
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
@@ -39,18 +42,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvSubId.setText(String.valueOf(sub_id.get(position)));
-        holder.tvWasteType.setText(String.valueOf(waste_type.get(position)));
-        holder.tvPrice.setText(String.valueOf(price.get(position)));
-        holder.tvDate.setText(String.valueOf(date.get(position)));
-        holder.tvFirstname.setText(String.valueOf(firstname.get(position)));
-        holder.tvLastname.setText(String.valueOf(lastname.get(position)));
+        holder.tvTaskId.setText(String.valueOf(task_id.get(position)));
+        holder.tvCollection_id.setText(String.valueOf(collection_id.get(position)));
+        holder.tvAddress.setText(String.valueOf(address.get(position)));
+        holder.tvIs_collected.setText(String.valueOf(is_collected.get(position)));
+        holder.tvAssigned_date.setText(String.valueOf(assigned_date.get(position)));
+        holder.tvDesired.setText(String.valueOf(user_collect_date.get(position)));
 
     }
 
     @Override
     public int getItemCount() {
-        return sub_id.size();
+        return task_id.size();
     }
     @Override
     public void onItemClick(int position) {
@@ -58,16 +61,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tvSubId, tvWasteType, tvPrice, tvDate, tvFirstname, tvLastname;
+        TextView tvTaskId, tvCollection_id, tvAssigned_date, tvAddress, tvDesired, tvIs_collected;
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
-            tvSubId = itemView.findViewById(R.id.tv_txn_id);
-            tvWasteType = itemView.findViewById(R.id.tv_waste_type);
-            tvPrice = itemView.findViewById(R.id.tv_price_his);
-            tvDate = itemView.findViewById(R.id.tv_date_his);
-            tvFirstname = itemView.findViewById(R.id.tv_first_name);
-            tvLastname = itemView.findViewById(R.id.tv_lastname);
-
+            tvTaskId = itemView.findViewById(R.id.tv_task_id);
+            tvCollection_id = itemView.findViewById(R.id.tv_collection_id);
+            tvAssigned_date = itemView.findViewById(R.id.tv_request_date);
+            tvDesired = itemView.findViewById(R.id.tv_desired_date);
+            tvAddress = itemView.findViewById(R.id.tv_address);
+            tvIs_collected = itemView.findViewById(R.id.tv_is_collected);
             itemView.setOnClickListener(v -> {
                 if(recyclerViewInterface != null){
                     int pos = getAdapterPosition();

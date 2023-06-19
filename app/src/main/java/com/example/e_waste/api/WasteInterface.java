@@ -1,4 +1,5 @@
 package com.example.e_waste.api;
+import com.example.e_waste.model.collections.Collection;
 import com.example.e_waste.model.collections.CollectionRequest;
 import com.example.e_waste.model.collections.CollectionResponse;
 import com.example.e_waste.model.profile.DetailsRequest;
@@ -26,7 +27,7 @@ import retrofit2.http.Path;
 
 public interface WasteInterface {
 
-    String base_url = "http://192.168.1.79:8000";
+    String base_url = "http://192.168.8.107:8000";
     @Headers({
             "Accept: application/json",
             "Content-Type: application/json"
@@ -39,15 +40,12 @@ public interface WasteInterface {
     // Registration Endpoint
     @POST("/api/add-user/")
     Call<UserResponse> getUser(@Body UserRequest userRequest);
-
     // Collections Endpoint
     @POST("/api/add-collection")
     Call<CollectionResponse> getCollection(@Body CollectionRequest collectionRequest);
-
     // Subscription Endpoint
     @POST("/api/add-subscription")
     Call<SubscriptionResponse> getSubscription(@Body SubscriptionRequest subRequest);
-
     // Login Endpoint
     @POST("/api/token/")
     Call<TokenResponse> getAuthToken(@Body TokenRequest tokenRequest);
@@ -59,11 +57,8 @@ public interface WasteInterface {
     // Profile Details Endpoint
     @GET("/api/profile-details/{authId}/")
     Call<DetailsResponse> getProfile(@Path("authId") int authId);
-
-    // My Subscription Endpoint
-    @GET("/api/my-subscriptions/{authId}/")
-    Call<List<Subscription>>  getSubscriptions(@Path("authId") int authId);
-
-
+    // My Collections Endpoint
+    @GET("/api/my-requests/{authId}/")
+    Call<List<Collection>>  getCollections(@Path("authId") int authId);
 
 }

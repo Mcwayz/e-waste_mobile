@@ -130,7 +130,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Collections"
+                        android:text="Request"
                         android:textColor="@color/blue"
                         android:textAlignment="center"
                         android:textStyle="bold"
@@ -139,7 +139,7 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:background="@drawable/bin"/>
+                        android:background="@drawable/truck"/>
 
 
 
@@ -180,7 +180,7 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:background="@drawable/cash"/>
+                        android:background="@drawable/check"/>
 
 
                 </LinearLayout>
@@ -218,7 +218,7 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:background="@drawable/history"/>
+                        android:background="@drawable/patient"/>
 
 
 
@@ -257,7 +257,7 @@
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:background="@drawable/account"/>
+                        android:background="@drawable/profile1"/>
 
                 </LinearLayout>
 

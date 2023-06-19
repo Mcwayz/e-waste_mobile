@@ -1,60 +1,59 @@
 package com.example.e_waste.adapter;
 
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.e_waste.R;
-import com.example.e_waste.model.subscriptions.SubsResponse;
-import com.example.e_waste.model.subscriptions.Subscription;
+import com.example.e_waste.model.collections.Collection;
 
 import java.util.List;
 
 public class WasteAdapter extends RecyclerView.Adapter<WasteAdapter.ViewHolder> {
 
-    private List<Subscription> subscriptionList;
+    private List<Collection> CollectionList;
 
-    public WasteAdapter(List<Subscription> subscriptionList) {
-        this.subscriptionList = subscriptionList;
+    public WasteAdapter(List<Collection> collectionList) {
+        this.CollectionList = collectionList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_row2, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Subscription subscription = subscriptionList.get(position);
-        holder.tvSubId.setText(String.valueOf(subscription.getSub_id()));
-        holder.tvFirstName.setText(subscription.getFirstname());
-        holder.tvLastName.setText(subscription.getLastname());
-        holder.tvWasteType.setText(subscription.getWaste_type());
-        holder.tvPrice.setText(subscription.getSub_date());
-        holder.tvDate.setText(subscription.getSub_date());
+        Collection collection = CollectionList.get(position);
+        holder.tvTask.setText(String.valueOf(collection.getTask_id()));
+        holder.tvCollectionId.setText(String.valueOf(collection.getCollection_id()));
+        holder.tvCollectorId.setText(collection.getCollector_id());
+        holder.tvDateClosed.setText(collection.getDate_closed());
+        holder.tvAssignedDate.setText(collection.getAssigned_date());
+        holder.tvAddress.setText(collection.getAddress());
+        holder.tvIs_collected.setText(collection.getCollector_id());
     }
 
     @Override
     public int getItemCount() {
-        return subscriptionList.size();
+        return CollectionList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvSubId, tvWasteType, tvFirstName, tvLastName, tvDate, tvPrice;
+        TextView tvTask, tvCollectionId, tvCollectorId, tvDateClosed, tvAssignedDate, tvAddress, tvIs_collected;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvSubId = itemView.findViewById(R.id.tv_sub_id);
-            tvWasteType = itemView.findViewById(R.id.tv_waste_type);
-            tvFirstName = itemView.findViewById(R.id.firstname);
-            tvLastName = itemView.findViewById(R.id.lastname);
-            tvPrice = itemView.findViewById(R.id.tv_price_his);
-            tvDate = itemView.findViewById(R.id.tv_date_his);
+            tvTask = itemView.findViewById(R.id.tv_task_id);
+            tvCollectionId = itemView.findViewById(R.id.tv_collection_id);
+            tvCollectorId = itemView.findViewById(R.id.tv_collector_id);
+            tvAddress = itemView.findViewById(R.id.tv_address);
+            tvDateClosed = itemView.findViewById(R.id.tv_collected_date);
+            tvIs_collected = itemView.findViewById(R.id.tv_is_collected);
         }
     }
 }

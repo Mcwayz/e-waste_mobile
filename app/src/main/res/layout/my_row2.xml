@@ -109,24 +109,24 @@
             android:src="@drawable/ic_calendar" />
 
         <TextView
-            android:id="@+id/tv_request"
+            android:id="@+id/tv_assigned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_his_qrc"
             android:layout_toRightOf="@id/img_person"
             android:layout_marginLeft="1dp"
-            android:text="Requested :"
+            android:text="Assigned :"
             android:textColor="@color/blue"
             android:textSize="10sp"
             android:textStyle="bold"
             />
 
         <TextView
-            android:id="@+id/tv_request_date"
+            android:id="@+id/tv_assigned_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_his_qrc"
-            android:layout_toRightOf="@id/tv_request"
+            android:layout_toRightOf="@id/tv_assigned"
             android:layout_marginLeft="3dp"
             android:text="--"
             android:textColor="@color/blue"
@@ -139,31 +139,31 @@
             android:id="@+id/img_person_1"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_toRightOf="@id/tv_request"
+            android:layout_toRightOf="@id/tv_assigned"
             android:layout_marginLeft="90dp"
             android:layout_below="@id/img_his_qrc"
             android:src="@drawable/ic_calendar"
             />
 
         <TextView
-            android:id="@+id/tv_desire"
+            android:id="@+id/tv_collected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_his_qrc"
             android:layout_toRightOf="@id/img_person_1"
             android:layout_marginLeft="3dp"
-            android:text="Desired :"
+            android:text="Collected :"
             android:textColor="@color/blue"
             android:textSize="10sp"
             android:textStyle="bold"
             />
 
         <TextView
-            android:id="@+id/tv_desired_date"
+            android:id="@+id/tv_collected_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_his_qrc"
-            android:layout_toRightOf="@id/tv_desire"
+            android:layout_toRightOf="@id/tv_collected"
             android:layout_marginLeft="3dp"
             android:text="--"
             android:textColor="@color/blue"
